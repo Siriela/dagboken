@@ -13,19 +13,7 @@ class DeleteButton extends React.Component {
  
   handleClick(id) {
     localStorage.removeItem(id);
-    this.renderList();
-    
-    
-    
   }
-renderList() {
-  return (
-      <Postlist 
-        posts='hejhejhej'
-      
-      />
-    );  
-}
 
   render() {
     let id= this.props.id; // Hämtar id, dvs timestampen, för den post som ska raderas
@@ -86,7 +74,6 @@ class Form extends React.Component {
 class Diary extends React.Component {
   constructor(props) {
     super(props);
-    
   }
  
   //Returnerar en array med alla posts wrappade i en ul
@@ -100,9 +87,7 @@ class Diary extends React.Component {
   
     return <ul>{items}</ul>;
   }
-
-
-
+  
   render() {
     return (
       <div className="diary">
