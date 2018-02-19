@@ -10,9 +10,10 @@ class DeleteButton extends React.Component {
     super(props);
     this.state={posts:[]}
   }
- 
+
   handleClick(id) {
     localStorage.removeItem(id);
+    //setTimeout(() => localStorage.removeItem(id), alert('removed '+ id), 3000); 
   }
 
   render() {
@@ -71,23 +72,32 @@ class Form extends React.Component {
   }
 }
 
+class SetTime extends React.Component {
+  handleChange() {
+    // TODO:
+    // Spara tidpunkt för borttagning
+  }
+  render() {
+    return <input type="date" onChange={this.handleChange.bind(this)} />
+  }
+}
 class Diary extends React.Component {
   constructor(props) {
     super(props);
   }
- 
+
   //Returnerar en array med alla posts wrappade i en ul
   getItems() {
     const items = [];
     for(let i=0;i<localStorage.length; i++) {
       const key = localStorage.key(i);
       const item = localStorage.getItem(key);
-      items.push(<li key={key}>{item} <DeleteButton id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
+      items.push(<li key={key}>{item} <DeleteButton id={key}/><SetTime id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
     }
   
     return <ul>{items}</ul>;
   }
-  
+
   render() {
     return (
       <div className="diary">
