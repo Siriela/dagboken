@@ -55,7 +55,12 @@ class Form extends React.Component {
   //När formuläret submittas körs denna. Den sparar det som nu står i textfältet till localstorage med en timestamp som key
   handleSubmit(event) {
     const time = new Date().getTime();
-    localStorage.setItem(time, this.state.value);
+    let data = {
+      'time':time,
+      'value':this.state.value,
+      'deleteDate':''};
+    let dataToStore= JSON.stringify(data);
+    localStorage.setItem(time, dataToStore);
   }
 
   // Här renderas själva formuläret av komponenten Form
@@ -90,11 +95,10 @@ class Diary extends React.Component {
   getItems() {
     const items = [];
     for(let i=0;i<localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const item = localStorage.getItem(key);
-      items.push(<li key={key}>{item} <DeleteButton id={key}/><SetTime id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
+      let key = localStorage.key(i);
+      let item = JSON.parse(localStorage.getItem(key));
+      items.push(<li key={key}>{item.value} <DeleteButton id={key}/><SetTime id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
     }
-  
     return <ul>{items}</ul>;
   }
 

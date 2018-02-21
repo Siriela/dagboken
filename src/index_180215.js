@@ -101,7 +101,7 @@ class Diary extends React.Component {
       
     }   
     const posts = items.map((items) =>
-    <li>{items}</li>
+    <li>{item}</li>
 );
 
   render() {
