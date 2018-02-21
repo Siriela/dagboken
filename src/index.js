@@ -78,12 +78,18 @@ class Form extends React.Component {
 }
 
 class SetTime extends React.Component {
-  handleChange() {
-    // TODO:
-    // Spara tidpunkt för borttagning
+  constructor(props) {
+    super(props);
+    this.state = {value: ''}; 
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value}); // Sätter state i formuläret så att jag ser vad jag har valt
+    const storedData= JSON.parse(localStorage.getItem(this.props.id));
+    storedData.deleteDate= event.target.value; // Värdet från datumfältet
+    localStorage.setItem(this.props.id, JSON.stringify(storedData));
   }
   render() {
-    return <input type="date" onChange={this.handleChange.bind(this)} />
+    return <input type="date" value={this.state.value} onChange={this.handleChange.bind(this)} />
   }
 }
 class Diary extends React.Component {
@@ -95,9 +101,9 @@ class Diary extends React.Component {
   getItems() {
     const items = [];
     for(let i=0;i<localStorage.length; i++) {
-      let key = localStorage.key(i);
-      let item = JSON.parse(localStorage.getItem(key));
-      items.push(<li key={key}>{item.value} <DeleteButton id={key}/><SetTime id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
+      const key = localStorage.key(i);
+      const item = JSON.parse(localStorage.getItem(key));
+      items.push(<li key={key}>{item.value} <DeleteButton id={key}/><SetTime value='1234' id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
     }
     return <ul>{items}</ul>;
   }
