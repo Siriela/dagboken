@@ -2,37 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // TODO next: 
+// Uppdatera state när man sätter datum
 
 // TODO:
 // Ladda om listan efter att något raderas
-class DeleteButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state={posts:[]}
-  }
+function deletePosts(key) {
+  localStorage.removeItem(key);
+  return localStorage
+}
 
+class DeleteButton extends React.Component {
   handleClick(id) {
     localStorage.removeItem(id);
-    //setTimeout(() => localStorage.removeItem(id), alert('removed '+ id), 3000); 
   }
 
   render() {
     let id= this.props.id; // Hämtar id, dvs timestampen, för den post som ska raderas
     return(
-      <button onClick={() => this.handleClick(id)}>Radera post</button>
+      <button onClick={() => this.handleClick(id)}>Radera nu</button>
     ); 
   }
 }
 
 class Postlist extends React.Component {
-  constructor(props) {
-    super(props);
-   
-  }
- 
   render() {
-  
-    let posts= this.props.posts;
+    const posts= this.props.posts;
     return(
       <div>    
         {posts}
@@ -49,16 +43,16 @@ class Form extends React.Component {
 
   // när något ändras i formuläret, när något skrivs körs denna. Den sätter state-värdet till vad som står just nu. Utan denna syns aldrig det som skrivs i textfältet 
   handleChange(event) {
-    this.setState({value: event.target.value});// target: det element som kallar funktionen handleChange? Dvs textarea
+    this.setState({value: event.target.value});// target: det element som kallar funktionen handleChange? Dvs textarea. Sätter state så att texten som skrivs syns i fältet.
   }
 
   //När formuläret submittas körs denna. Den sparar det som nu står i textfältet till localstorage med en timestamp som key
   handleSubmit(event) {
     const time = new Date().getTime();
     let data = {
-      'time':time,
-      'value':this.state.value,
-      'deleteDate':''};
+      'time' : time,
+      'value' : this.state.value,
+      'deleteDate' : ''};
     let dataToStore= JSON.stringify(data);
     localStorage.setItem(time, dataToStore);
   }
@@ -89,13 +83,10 @@ class SetTime extends React.Component {
     localStorage.setItem(this.props.id, JSON.stringify(storedData));
   }
   render() {
-    return <input type="date" value={this.state.value} onChange={this.handleChange.bind(this)} />
+    return <label>Sätt datum för borttagning:<input type="date" value={this.state.value} onChange={this.handleChange.bind(this)} /></label>
   }
 }
 class Diary extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   //Returnerar en array med alla posts wrappade i en ul
   getItems() {
@@ -103,7 +94,14 @@ class Diary extends React.Component {
     for(let i=0;i<localStorage.length; i++) {
       const key = localStorage.key(i);
       const item = JSON.parse(localStorage.getItem(key));
-      items.push(<li key={key}>{item.value} <DeleteButton id={key}/><SetTime value='1234' id={key}/></li>); //Jag kan varva html och variabler om jag använder {} 
+      const now = new Date().getTime();
+      const time = new Date(item.deleteDate).getTime();
+      if ( time <= now ) {
+        deletePosts(key);
+      }
+      else {
+        items.push(<li key={key}>{item.value} Raderas den: {item.deleteDate} <DeleteButton id={key}/><SetTime id={key}/></li>); //Jag kan varva html och variabler om jag använder {}         
+      }
     }
     return <ul>{items}</ul>;
   }
