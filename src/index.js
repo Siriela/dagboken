@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 // TODO next: 
 // Uppdatera state när man sätter datum
+// Design: sätt färger Google MD
 
 // TODO:
 // Ladda om listan efter att något raderas
@@ -61,10 +62,7 @@ class Form extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
-        <label>
-          Meddelande:
           <textarea value={this.state.value} onChange={this.handleChange.bind(this)} />
-        </label>
         <input type="submit" value="Submit" />
       </form> 
     );
