@@ -2,16 +2,25 @@ body {
   font-family: 'Roboto';
 }
 textarea {
-  border: 1px solid #757575;
-  border-radius: 5px;
+  border: 2px solid #757575;
   font-family: 'Roboto';
   width: 100%;
-  height: 500px;
+  height: 100px;
   outline: none;
   background-color: transparent;
+  font-size: 20px;
 }
 
 textarea:focus {
   border: 2px solid #4CAF50;
 }
 
+.diary-postlist-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.diary-postlist-post {
+  background: #b0d8b6;
+  padding: 16px;
+}
